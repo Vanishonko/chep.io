@@ -21,12 +21,14 @@
     <canvas id="canvas-id" width="800" height="600">
         <script>
           
-            function rotate(cx, cy, x, y, angle){
-                let cos = Math.cos(angle);
-                let sin = Math.sin(angle);
-                let newX = (cos * (x - cx)) + (sin * (y - cy)) + cx;
-                let newY = (cos * (y - cy)) + (sin * (x - cx)) + cy;
-                return [newX, newY];
+            function rotate(origin, point, angle){
+                let radians = angle * Math.PI / 180;
+                let cos = Math.cos(radians);
+                let sin = Math.sin(radians);
+                let nX = Math.round ( ( cos * (point.x - origin.x) ) - ( sin * (point.y - origin.y) ) + origin.x );
+                let nY = Math.round ( ( cos * (point.y - origin.y) ) + ( sin * (point.x - origin.x) ) + origin.y );
+                let newPoint = new Point(nX, nY);
+                return newPoint;
             }
 
             function areColliding(Ax, Ay, Awidth, Aheight, Bx, By, Bwidth, Bheight) {
