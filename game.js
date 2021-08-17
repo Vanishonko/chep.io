@@ -5,6 +5,30 @@ class Point {
     }
 }
 
+class Bullet {
+    constructor(x, y, dX, dY, r){
+        this.x = x;
+        this.y = y;
+        this.dX = dX;
+        this.dY = dY;
+        this.r = r;
+    }
+
+    move() {
+        this.x += this.dX;
+        this.y += this.dY;
+    }
+
+    draw() {
+        context.fillStyle = "white";
+        context.strokeStyle = "black";
+        context.beginPath();
+        context.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        context.closePath();
+        context.fill();
+        context.stroke();
+    }
+}
 
 let player = {
     rotation: 90,
@@ -17,14 +41,11 @@ let player = {
     p5: new Point(35, 303),
     draw: function(){
         context.fillStyle = this.color;
-        context.beginPath();
-        context.moveTo(this.p1.x, this.p1.y);
-        context.lineTo(this.p2.x, this.p2.y);
-        context.lineTo(this.p4.x, this.p4.y);
-        context.lineTo(this.p3.x, this.p3.y);
-        context.lineTo(this.p1.x, this.p1.y);
-        context.closePath();
-        context.fill();
+        context.save();
+        context.translate(this.p5.x, this.p5.y);
+        context.rotate(degToRad(this.rotation - 90));
+        context.fillRect(0, -18, this.duljina, 35);
+        context.restore();
         context.beginPath();
         context.arc(35, 285, 20, 0, Math.PI*2);
         context.arc(35, 320, 20, 0, Math.PI*2);
@@ -39,23 +60,18 @@ let player = {
         if(this.rotation < 0){
             this.rotation += 360;
         }
-        if(this.rotation < 45){
+        if(this.rotation < 45 && mouseY < 303){
             this.rotation = 45;
         }
-        if(this.rotation > 135){
+        if(this.rotation > 135 && mouseY > 303){
             this.rotation = 135;
         }
-        console.log(this.rotation)
-
-        this.p3 = rotate(this.p5, this.p3, this.rotation);
-        this.p4 = rotate(this.p5, this.p4, this.rotation);
-    
     },
-    shoot: function(){
-
+    ejaculate: function(){
     }
 }
 
+let bullets = [];
 function update() {
    // console.log(dist(player.p1.x, player.p1.y, player.p3.x, player.p3.y));
 }

@@ -31,6 +31,9 @@
                 return newPoint;
             }
 
+            function degToRad(deg){
+                return deg*Math.PI/180;
+            }
             function areColliding(Ax, Ay, Awidth, Aheight, Bx, By, Bwidth, Bheight) {
                 if (Bx <= Ax + Awidth) {
                     if (Ax <= Bx + Bwidth) {
