@@ -5,6 +5,34 @@ class Point {
     }
 }
 
+class Eggcell {
+    constructor(){
+        this.x = 900 + Math.floor(Math.random()*300);
+        this.y = Math.floor(Math.random()*1000) - 400;
+        this.dX = 35 - this.x;
+        this.dY = 303 - this.y;
+        let length = Math.hypot(this.dX, this.dY);
+        if(length > 0){
+            this.dX /= length;
+            this.dY /= length;
+        }
+        this.r = Math.floor(Math.random()*100) + 30;
+        this.speed = 5 - this.r/100*5;
+        this.color = getRandomColor();
+    }
+    move(){
+        this.x += this.dX * this.speed;
+        this.y += this.dY * this.speed;
+    }
+    draw(){
+        context.fillStyle = this.color;
+        context.beginPath();
+        context.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        context.closePath();
+        context.fill();
+    }
+}
+
 class Bullet {
     constructor(point, dir, r){
         this.x = point.x;
@@ -83,22 +111,20 @@ let player = {
     }
 }
 
-let bullets = [];
+let bullets = [], enemies = [], level = 0.9;
 function update() {
     for ( let i = 0; i < bullets.length ; i ++){
         bullets[i].move();
-        if(bullets[i].offScreen) {
-            console.log(i, " is about to be deleted")
-            console.log(bullets[i].x, bullets[i].y)
-            bullets.splice(i, 1);
-        }
+        if(bullets[i].offScreen) bullets.splice(i, 1)
     }
+    if (Math.random() > level) enemies.push(new Eggcell());
+    for ( let i = 0; i < enemies.length ; i ++) enemies[i].move();
+
 }
 
 function draw() {
-    for ( let i = 0; i < bullets.length ; i ++){
-        bullets[i].draw();
-    }
+    for ( let i = 0; i < enemies.length ; i ++) enemies[i].draw();
+    for ( let i = 0; i < bullets.length ; i ++) bullets[i].draw();
     player.draw();
 }
 
