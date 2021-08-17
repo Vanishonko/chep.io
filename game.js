@@ -10,11 +10,24 @@ class Bullet {
         this.x = point.x;
         this.y = point.y;
         this.r = r;
-    }
+        this.speed = 2;
+        this.dX = mouseX - 35;
+        this.dY = mouseY - 303;
+        this.offScreen = false;
+        let length = Math.hypot(this.dX, this.dY);
+        if(length > 0) {
+            this.dX /= length;
+            this.dY /= length;
+        }
+        if(this.dX < 0) this.dX = 0;
+    }   
 
     move() {
-        this.x += this.dX;
-        this.y += this.dY;
+        this.x += this.dX * this.speed;
+        this.y += this.dY * this.speed;
+        if(this.x > 1000 || this.y < -200 || this.y > 800) {
+            this.offScreen = true;
+        }
     }
 
     draw() {
@@ -73,7 +86,12 @@ let player = {
 let bullets = [];
 function update() {
     for ( let i = 0; i < bullets.length ; i ++){
-      //  bullets[i].move();
+        bullets[i].move();
+        if(bullets[i].offScreen) {
+            console.log(i, " is about to be deleted")
+            console.log(bullets[i].x, bullets[i].y)
+            bullets.splice(i, 1);
+        }
     }
 }
 
