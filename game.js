@@ -11,6 +11,7 @@ class Eggcell {
         this.y = Math.floor(Math.random()*1000) - 400;
         this.dX = 35 - this.x;
         this.dY = 303 - this.y;
+        this.offScreen = false;
         let length = Math.hypot(this.dX, this.dY);
         if(length > 0){
             this.dX /= length;
@@ -23,6 +24,7 @@ class Eggcell {
     move(){
         this.x += this.dX * this.speed;
         this.y += this.dY * this.speed;
+        if(this.x < - 200) this.offScreen = true;
     }
     draw(){
         context.fillStyle = this.color;
@@ -111,14 +113,17 @@ let player = {
     }
 }
 
-let bullets = [], enemies = [], level = 0.9;
+let bullets = [], enemies = [], level = 0.95;
 function update() {
     for ( let i = 0; i < bullets.length ; i ++){
         bullets[i].move();
-        if(bullets[i].offScreen) bullets.splice(i, 1)
+        if(bullets[i].offScreen) bullets.splice(i, 1);
     }
     if (Math.random() > level) enemies.push(new Eggcell());
-    for ( let i = 0; i < enemies.length ; i ++) enemies[i].move();
+    for ( let i = 0; i < enemies.length ; i ++) {
+        enemies[i].move();
+        if(enemies[i].offScreen) enemies.splice(i, 1);
+    }
 
 }
 
@@ -129,15 +134,15 @@ function draw() {
 }
 
 function keyup(key) {
-    console.log("Pressed", key);
+   // console.log("Pressed", key);
 }
 
 function mousemove(){
-     player.aim();
+    player.aim();
 
 }
 
 function mouseup() {
-    console.log("Mouse clicked at", mouseX, mouseY);
+   // console.log("Mouse clicked at", mouseX, mouseY);
     player.ejaculate();
 }
