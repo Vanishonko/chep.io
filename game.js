@@ -18,6 +18,7 @@ class Eggcell {
             this.dY /= length;
         }
         this.r = Math.floor(Math.random()*100) + 30;
+        this.hp = this.r;
         this.speed = 5 - this.r/100*5;
         this.color = getRandomColor();
     }
@@ -32,6 +33,10 @@ class Eggcell {
         context.arc(this.x, this.y, this.r, 0, Math.PI*2);
         context.closePath();
         context.fill();
+        context.fillStyle = "gray";
+        context.fillRect(this.x - this.r, this.y - this.r - 14, this.r*2, 12)
+        context.fillStyle = this.color;
+        context.fillRect(this.x - this.r + 2, this.y - this.r - 12, this.hp*2 - 4, 8);
     }
 }
 
@@ -44,6 +49,7 @@ class Bullet {
         this.dX = mouseX - 35;
         this.dY = mouseY - 303;
         this.offScreen = false;
+        this.dmg = 40;
         let length = Math.hypot(this.dX, this.dY);
         if(length > 0) {
             this.dX /= length;
@@ -113,7 +119,7 @@ let player = {
     }
 }
 
-let bullets = [], enemies = [], level = 0.95;
+let bullets = [], enemies = [], level = 0.975;
 function update() {
     for ( let i = 0; i < bullets.length ; i ++){
         bullets[i].move();
@@ -123,6 +129,13 @@ function update() {
     for ( let i = 0; i < enemies.length ; i ++) {
         enemies[i].move();
         if(enemies[i].offScreen) enemies.splice(i, 1);
+        for( let j = 0; j < bullets.length ; j ++){
+            if(dist(bullets[j].x, bullets[j].y, enemies[i].x, enemies[i].y) <= enemies[i].r + bullets[j].r){
+                enemies[i].hp -= bullets[j].dmg;
+                bullets.splice(j, 1);
+                if(enemies[i].hp <= 0) enemies.splice(i, 1);
+            }
+        }
     }
 
 }
@@ -135,6 +148,7 @@ function draw() {
 
 function keyup(key) {
    // console.log("Pressed", key);
+    player.ejaculate();
 }
 
 function mousemove(){
@@ -144,5 +158,4 @@ function mousemove(){
 
 function mouseup() {
    // console.log("Mouse clicked at", mouseX, mouseY);
-    player.ejaculate();
 }
