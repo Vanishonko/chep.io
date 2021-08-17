@@ -60,24 +60,32 @@ let player = {
         if(this.rotation < 0){
             this.rotation += 360;
         }
-        if(this.rotation < 45 && mouseY < 303){
+        if(this.rotation < 45 || ( mouseY < 303 && this.rotation > 135) ){
             this.rotation = 45;
         }
-        if(this.rotation > 135 && mouseY > 303){
+        if(this.rotation > 135){
             this.rotation = 135;
         }
     },
     ejaculate: function(){
+        let newBullet = new Bullet();
+        bullets.push(newBullet);
     }
 }
 
 let bullets = [];
 function update() {
+    for ( let i = 0; i < bullets.length ; i ++){
+        bullets.move();
+    }
    // console.log(dist(player.p1.x, player.p1.y, player.p3.x, player.p3.y));
 }
 
 function draw() {
     player.draw();
+    for ( let i = 0; i < bullets.length ; i ++){
+        bullets.draw();
+    }
 }
 
 function keyup(key) {
