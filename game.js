@@ -90,8 +90,8 @@ let player = {
         context.fillRect(0, -18, this.duljina, 35);
         context.restore();
         context.beginPath();
-        context.arc(35, 285, 20, 0, Math.PI * 2);
-        context.arc(35, 320, 20, 0, Math.PI * 2);
+        context.arc(this.p1.x, this.p1.y - 18, 20, 0, Math.PI * 2);
+        context.arc(this.p1.x, this.p1.y + 17, 20, 0, Math.PI * 2);
         context.closePath();
         context.fill();
     },
@@ -112,15 +112,33 @@ let player = {
     },
     ejaculate: function () {
         let shootPoint;
-        let oldP = new Point((35 + this.duljina), 303);
+        let oldP = new Point((this.p1.x + this.duljina), this.p1.y);
         shootPoint = rotate(this.p1, oldP, degToRad(this.rotation - 90));
         let newBullet = new Bullet(shootPoint, this.rotation, 10);
         bullets.push(newBullet);
+    },
+    controll: function () {
+        if (isKeyPressed[65]) {
+            this.p1.x -= 5;
+        }
+        if (isKeyPressed[68]) {
+            this.p1.x += 5;
+        }
+        if (isKeyPressed[87]) {
+            this.p1.y -= 5;
+        }
+        if (isKeyPressed[83]) {
+            this.p1.y += 5;
+        }
+        if (isKeyPressed[32]) {
+            player.ejaculate();
+        }
     }
 }
 
 let bullets = [], enemies = [], level = 0.975;
 function update() {
+
     for (let i = 0; i < bullets.length; i++) {
         bullets[i].move();
         if (bullets[i].offScreen) bullets.splice(i, 1);
@@ -133,27 +151,27 @@ function update() {
             if (dist(bullets[j].x, bullets[j].y, enemies[i].x, enemies[i].y) <= enemies[i].r + bullets[j].r) {
                 enemies[i].hp -= bullets[j].dmg;
                 bullets.splice(j, 1);
+                player.bullets--;
                 if (enemies[i].hp <= 0) enemies.splice(i, 1);
             }
         }
     }
-
 }
 
 function draw() {
     for (let i = 0; i < enemies.length; i++) enemies[i].draw();
     for (let i = 0; i < bullets.length; i++) bullets[i].draw();
     player.draw();
+    player.controll()
 }
 
 function keyup(key) {
-    // console.log("Pressed", key);
-    player.ejaculate();
+
+    console.log(key)
 }
 
 function mousemove() {
     player.aim();
-
 }
 
 function mouseup() {
