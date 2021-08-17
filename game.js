@@ -6,11 +6,9 @@ class Point {
 }
 
 class Bullet {
-    constructor(x, y, dX, dY, r){
-        this.x = x;
-        this.y = y;
-        this.dX = dX;
-        this.dY = dY;
+    constructor(point, dir, r){
+        this.x = point.x;
+        this.y = point.y;
         this.r = r;
     }
 
@@ -34,15 +32,11 @@ let player = {
     rotation: 90,
     duljina: 120,
     color: getRandomColor(), // rotation of the player in the range between 45 and 135 degrees. defaults to 90 when facing right;
-    p1: new Point(35, 285),
-    p2: new Point(35, 320),
-    p3: new Point(155, 285),
-    p4: new Point(155, 320),
-    p5: new Point(35, 303),
+    p1: new Point(35, 303),
     draw: function(){
         context.fillStyle = this.color;
         context.save();
-        context.translate(this.p5.x, this.p5.y);
+        context.translate(this.p1.x, this.p1.y);
         context.rotate(degToRad(this.rotation - 90));
         context.fillRect(0, -18, this.duljina, 35);
         context.restore();
@@ -68,7 +62,10 @@ let player = {
         }
     },
     ejaculate: function(){
-        let newBullet = new Bullet();
+        let shootPoint;
+        let oldP = new Point((35 + this.duljina), 303);
+        shootPoint = rotate(this.p1, oldP, degToRad(this.rotation - 90));
+        let newBullet = new Bullet(shootPoint, this.rotation, 10);
         bullets.push(newBullet);
     }
 }
@@ -76,16 +73,15 @@ let player = {
 let bullets = [];
 function update() {
     for ( let i = 0; i < bullets.length ; i ++){
-        bullets.move();
+      //  bullets[i].move();
     }
-   // console.log(dist(player.p1.x, player.p1.y, player.p3.x, player.p3.y));
 }
 
 function draw() {
-    player.draw();
     for ( let i = 0; i < bullets.length ; i ++){
-        bullets.draw();
+        bullets[i].draw();
     }
+    player.draw();
 }
 
 function keyup(key) {
@@ -99,4 +95,5 @@ function mousemove(){
 
 function mouseup() {
     console.log("Mouse clicked at", mouseX, mouseY);
+    player.ejaculate();
 }

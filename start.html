@@ -22,9 +22,8 @@
         <script>
           
             function rotate(origin, point, angle){
-                let radians = angle * Math.PI / 180;
-                let cos = Math.cos(radians);
-                let sin = Math.sin(radians);
+                let cos = Math.cos(angle);
+                let sin = Math.sin(angle);
                 let nX = Math.round ( ( cos * (point.x - origin.x) ) - ( sin * (point.y - origin.y) ) + origin.x );
                 let nY = Math.round ( ( cos * (point.y - origin.y) ) + ( sin * (point.x - origin.x) ) + origin.y );
                 let newPoint = new Point(nX, nY);
@@ -33,6 +32,9 @@
 
             function degToRad(deg){
                 return deg*Math.PI/180;
+            }
+            function radToDeg(rad){
+                return rad/Math.PI*180;
             }
             function areColliding(Ax, Ay, Awidth, Aheight, Bx, By, Bwidth, Bheight) {
                 if (Bx <= Ax + Awidth) {
