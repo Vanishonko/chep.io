@@ -20,7 +20,21 @@
 <body onload="init()">
     <canvas id="canvas-id" width="800" height="600">
         <script>
-          
+
+            function randomID(){
+                return Math.random().toString(36).substr(2, 7);
+            }
+
+            function drawDick(x, y, width, color) {
+                context.fillStyle = color;
+                context.fillRect(0, - 18, width, 35);
+                context.beginPath();
+                context.arc(0, -18, 20, 0, Math.PI * 2);
+                context.arc(0, 17, 20, 0, Math.PI * 2);
+                context.closePath();
+                context.fill();
+            }
+
             function rotate(origin, point, angle){
                 let cos = Math.cos(angle);
                 let sin = Math.sin(angle);
@@ -65,7 +79,7 @@
                 return color;
             }
             // Fullscreen flag
-            let endlessCanvas = false;
+            let endlessCanvas = true;
 
             // How often will the update function from game.js be executed
             let updateTime = 10;

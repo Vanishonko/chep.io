@@ -76,3 +76,52 @@ class Bullet {
         context.stroke();
     }
 }
+
+class Player {
+    constructor(x, y, width) {
+        this.rotation = 90;
+        this.width = width;
+        this.pos = { x: x, y: y };
+        this.color = getRandomColor();
+        this.id = randomID();
+    }
+    draw() {
+        context.save();
+        context.translate(this.pos.x, this.pos.y);
+        context.rotate(degToRad(this.rotation - 90));
+        drawDick(this.pos.x, this.pos.y, this.width, this.color)
+        context.restore();
+    }
+    aim() {
+        let dX = mouseX - this.pos.x;
+        let dY = mouseY - this.pos.y;
+        this.rotation = Math.round((Math.atan2(dY, dX)) * 180 / Math.PI);
+        this.rotation += 90;
+    }
+    ejaculate() {
+        let shootPoint;
+        let originP = new Point(this.pos.x, this.pos.y);
+        let oldP = new Point((this.pos.x + this.width), this.pos.y);
+        shootPoint = rotate(originP, oldP, degToRad(this.rotation - 90));
+        let newBullet = new Bullet(shootPoint, this.rotation, 10);
+        bullets.push(newBullet);
+        console.log(newBullet)
+    }
+    move() {
+        if (isKeyPressed[65]) {
+            this.pos.x -= 5;
+        }
+        if (isKeyPressed[68]) {
+            this.pos.x += 5;
+        }
+        if (isKeyPressed[87]) {
+            this.pos.y -= 5;
+        }
+        if (isKeyPressed[83]) {
+            this.pos.y += 5;
+        }
+        if (isKeyPressed[32]) {
+            this.ejaculate();
+        }
+    }
+}   

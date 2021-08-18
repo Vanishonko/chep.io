@@ -1,6 +1,6 @@
 
-let player = {
-    rotation: 90,
+let player = new Player(100, 100, 120)
+    /*rotation: 90,
     duljina: 120,
     color: getRandomColor(), // rotation of the player in the range between 45 and 135 degrees. defaults to 90 when facing right;
     p1: new Point(35, 303),
@@ -40,14 +40,16 @@ let player = {
         bullets.push(newBullet);
     }
 }
-
+*/
 let bullets = [], enemies = [], level = 0.975;
 function update() {
+    player.move();
+    player.aim();
     for ( let i = 0; i < bullets.length ; i ++){
         bullets[i].move();
         if(bullets[i].offScreen) bullets.splice(i, 1);
     }
-    if (Math.random() > level) enemies.push(new Eggcell());
+    //if (Math.random() > level) enemies.push(new Eggcell());
     for ( let i = 0; i < enemies.length ; i ++) {
         enemies[i].move();
         if(enemies[i].offScreen) enemies.splice(i, 1);
@@ -69,12 +71,9 @@ function draw() {
 }
 
 function keyup(key) {
-   // console.log("Pressed", key);
-    player.ejaculate();
 }
 
 function mousemove(){
-    player.aim();
 
 }
 
