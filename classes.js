@@ -84,6 +84,7 @@ class Player {
         this.pos = { x: x, y: y };
         this.color = getRandomColor();
         this.id = randomID();
+        this.firerate = { regularCooldown: 50, currentCooldown: 0}
     }
     draw() {
         context.save();
@@ -99,6 +100,7 @@ class Player {
         this.rotation += 90;
     }
     ejaculate() {
+        this.firerate.currentCooldown = this.firerate.regularCooldown;
         let shootPoint;
         let originP = new Point(this.pos.x, this.pos.y);
         let oldP = new Point((this.pos.x + this.width), this.pos.y);
@@ -108,6 +110,7 @@ class Player {
         console.log(newBullet)
     }
     move() {
+        this.firerate.currentCooldown --;
         if (isKeyPressed[65]) {
             this.pos.x -= 5;
         }
@@ -120,7 +123,7 @@ class Player {
         if (isKeyPressed[83]) {
             this.pos.y += 5;
         }
-        if (isKeyPressed[32]) {
+        if (isKeyPressed[32] && this.firerate.currentCooldown <= 0) {
             this.ejaculate();
         }
     }
