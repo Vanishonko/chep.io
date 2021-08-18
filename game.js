@@ -9,8 +9,8 @@ class Eggcell {
     constructor() {
         this.x = 900 + Math.floor(Math.random() * 300);
         this.y = Math.floor(Math.random() * 1000) - 400;
-        this.dX = 35 - this.x;
-        this.dY = 303 - this.y;
+        this.dX = player.p1.x - this.x;
+        this.dY = player.p1.y - this.y;
         this.offScreen = false;
         let length = Math.hypot(this.dX, this.dY);
         if (length > 0) {
@@ -46,8 +46,8 @@ class Bullet {
         this.y = point.y;
         this.r = r;
         this.speed = 2;
-        this.dX = mouseX - 35;
-        this.dY = mouseY - 303;
+        this.dX = mouseX - player.p1.x;
+        this.dY = mouseY - player.p1.y;
         this.offScreen = false;
         this.dmg = 40;
         let length = Math.hypot(this.dX, this.dY);
@@ -96,19 +96,19 @@ let player = {
         context.fill();
     },
     aim: function () {
-        let dX = mouseX - 35;
-        let dY = mouseY - 303;
+        let dX = mouseX - this.p1.x;
+        let dY = mouseY - this.p1.y;
         this.rotation = Math.round((Math.atan2(dY, dX)) * 180 / Math.PI);
         this.rotation += 90;
-        if (this.rotation < 0) {
-            this.rotation += 360;
-        }
-        if (this.rotation < 45 || (mouseY < 303 && this.rotation > 135)) {
-            this.rotation = 45;
-        }
-        if (this.rotation > 135) {
-            this.rotation = 135;
-        }
+        // if (this.rotation < 0) {
+        //     this.rotation += 360;
+        // }
+        // if (this.rotation < 45 || (mouseY < 303 && this.rotation > 135)) {
+        //     this.rotation = 45;
+        // }
+        // if (this.rotation > 135) {
+        //     this.rotation = 135;
+        // }
     },
     ejaculate: function () {
         let shootPoint;
@@ -151,7 +151,6 @@ function update() {
             if (dist(bullets[j].x, bullets[j].y, enemies[i].x, enemies[i].y) <= enemies[i].r + bullets[j].r) {
                 enemies[i].hp -= bullets[j].dmg;
                 bullets.splice(j, 1);
-                player.bullets--;
                 if (enemies[i].hp <= 0) enemies.splice(i, 1);
             }
         }
