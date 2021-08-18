@@ -26,7 +26,7 @@ class Player {
         let dX = mouseX - this.pos.x;
         let dY = mouseY - this.pos.y;
         this.rotation = Math.round((Math.atan2(dY, dX)) * 180 / Math.PI);
-        this.rotation += 90;
+        this.rotation += 90; // Това го добавяме за да сочи към мишката иначе е прецакано
     }
     controll() {
         if (isKeyPressed[65]) {
