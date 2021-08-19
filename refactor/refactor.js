@@ -18,7 +18,7 @@ class Player {
     draw() {
         context.save();
         context.translate(this.pos.x, this.pos.y);
-        context.rotate(degToRad(this.angle - 90));
+        context.rotate(degToRad(this.angle));
         drawDick(this.pos.x, this.pos.y, this.width)
         context.restore();
     }
@@ -26,7 +26,6 @@ class Player {
         let dX = mouseX - this.pos.x;
         let dY = mouseY - this.pos.y;
         this.angle = Math.atan2(dY, dX) * 180 / Math.PI;
-        this.angle += 90; // Това го добавяме за да сочи към мишката иначе е прецакано
         //Следващото парче код ще превръща -90 до -270 в правилния ъгъл(-40 - 320)
         if (Math.sign(this.angle) == -1) {
             this.angle = this.angle + 360
@@ -54,16 +53,21 @@ class Player {
 
 class Bullet {
     constructor(x, y, angle) {
-        this.x = x;
-        this.y = y;
-        this.dX = Math.cos(degToRad(angle-90))
-        this.dY = Math.sin(degToRad(angle-90))
+
+        if (Math.sign(this.angle) == -1) {
+            this.angle = this.angle + 360
+        }
+        this.dX = Math.cos(degToRad(angle))
+        this.dY = Math.sin(degToRad(angle))
+        this.x = x + (this.dX * player.width);
+        this.y = y + (this.dY * player.width);
     }
     move() {
         this.x += this.dX
         this.y += this.dY
     }
     draw() {
+        context.save();//ОК???? Добавих тези 2 реда код и почна да се рисува правилно играча. 
         context.fillStyle = "white";
         context.strokeStyle = "black";
         context.beginPath();
@@ -71,22 +75,23 @@ class Bullet {
         context.closePath();
         context.fill();
         context.stroke();
+        context.restore();//ОК???? Добавих тези 2 реда код и почна да се рисува правилно играча. 
     }
 }
 
 let player = new Player(100, 100, 50)
 let bullets = [];
 function update() {
-    for (let i = 0; i < bullets.length; i++) {
-        bullets[i].move();
-    }
+    for (let i = 0; i < bullets.length; i++) bullets[i].move();
+
     player.controll()
     player.aim();
 }
 
 function draw() {
-    for (let i = 0; i < bullets.length; i++) bullets[i].draw();
     player.draw();
+    for (let i = 0; i < bullets.length; i++) bullets[i].draw();
+
 }
 
 function keyup(key) {
