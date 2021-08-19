@@ -20,6 +20,7 @@
 <body onload="init()">
 	<canvas id="canvas-id" width="1920" height="1080"></canvas>
 	<script>
+		"use strict";
 		function areColliding(Ax, Ay, Awidth, Aheight, Bx, By, Bwidth, Bheight) {
 			if (Bx <= Ax + Awidth) {
 				if (Ax <= Bx + Bwidth) {
@@ -119,7 +120,7 @@
 		let key_a = 65;
 		let key_z = 90;
 		let isKeyPressed = [];
-		for (i = 0; i < 256; ++i) {
+		for (let i = 0; i < 256; ++i) {
 			isKeyPressed.push(0);
 		}
 		// gridSize = 50; // uncomment or add to game.js if you want a grid
@@ -232,7 +233,11 @@
 	</script>
 
 	<!-- user's game file -->
+	<script src="./classes/player.js"></script>
+	<script src="./classes/bullet.js"></script>
 	<script src="./refactor.js"></script>
+
+
 </body>
 
 </html>
