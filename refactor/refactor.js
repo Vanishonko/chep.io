@@ -56,9 +56,8 @@ class Bullet {
     constructor(x, y, angle) {
         this.x = x;
         this.y = y;
-        let radians = (angle - 90) * (Math.PI / 180)
-        this.dX = Math.cos(radians)
-        this.dY = Math.sin(radians)
+        this.dX = Math.cos(degToRad(angle-90))
+        this.dY = Math.sin(degToRad(angle-90))
     }
     move() {
         this.x += this.dX
