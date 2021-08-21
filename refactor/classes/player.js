@@ -1,4 +1,3 @@
-"use strict";
 function degToRad(angle) {
     return angle * Math.PI / 180
 }
@@ -13,11 +12,11 @@ function drawDick(x, y, width, height) {
 
 class Player {
     constructor(x, y, width) {
-        this.angle = 0;
-        this.width = width;
-        this.height = 35;
-        this.pos = { x: x, y: y };
-        this.firerate = { regularCooldown: 50, currentCooldown: 0};
+        this.angle = 0; // Ъгъл от 0 до 360 градуса
+        this.width = width; // Дължината на играча
+        this.height = 35; // Дебелината на играча
+        this.pos = { x: x, y: y };//Има ли смисъл да държим координатите в един обект?
+        this.firerate = { regularCooldown: 50, currentCooldown: 0 };
     }
     draw() {
         context.save();
@@ -40,7 +39,7 @@ class Player {
         bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle))
     }
     move() {
-        this.firerate.currentCooldown --;
+        this.firerate.currentCooldown--;
         if (isKeyPressed[65]) {
             this.pos.x -= 5;
         }
@@ -53,7 +52,7 @@ class Player {
         if (isKeyPressed[83]) {
             this.pos.y += 5;
         }
-        if(isKeyPressed[32] && this.firerate.currentCooldown <= 0){
+        if (isKeyPressed[32] && this.firerate.currentCooldown <= 0) {
             this.ejaculate();
         }
     }
