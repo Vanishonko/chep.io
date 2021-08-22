@@ -11,10 +11,10 @@ function drawDick(x, y, width, height) {
 }
 
 class Player {
-    constructor(x, y, width) {
+    constructor(x, y, width, height) {
         this.angle = 0; // Ъгъл от 0 до 360 градуса
         this.width = width; // Дължината на играча
-        this.height = 35; // Дебелината на играча
+        this.height = height; // Дебелината на играча
         this.pos = { x: x, y: y };//Има ли смисъл да държим координатите в един обект?
         this.firerate = { regularCooldown: 50, currentCooldown: 0 };
     }
@@ -36,7 +36,7 @@ class Player {
     }
     ejaculate() {
         this.firerate.currentCooldown = this.firerate.regularCooldown;
-        bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle))
+        bullets.push(new Bullet(this.pos.x, this.pos.y, this.angle, bullets.length))
     }
     move() {
         this.firerate.currentCooldown--;
@@ -54,6 +54,11 @@ class Player {
         }
         if (isKeyPressed[32] && this.firerate.currentCooldown <= 0) {
             this.ejaculate();
+        }
+    }
+    collision() {
+        for (let i = 0; i < eggcells.length; i++){
+            
         }
     }
 }
