@@ -1,4 +1,4 @@
-var app = require('express')();
+    var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 function randomInteger(upTo) {
@@ -11,6 +11,7 @@ app.get('/game.js', function (req, res) {
     res.sendFile(__dirname + "/game.js");
 });
 let players = [];
+
 let playerCount = 0;
 let colors = []
 for (let i = 0; i < 100; i++) {
@@ -27,13 +28,18 @@ io.on('connection', function (socket) {
         io.emit('move', id, dx, dy)
     })
     socket.on('aim', function (angle) {
-        io.emit('aim', id, angle)
+        io.emit('aim', id, angle);
+    })
+    socket.on('ejaculate', function(newBullet_) {
+        io.emit('ejaculate', id, newBullet_);
+    })
+    socket.on('bulletMove', function(bIndex, dX, dY){
+        io.emit('bulletMove', id, bIndex, dX, dY);
     })
     socket.on('disconnect', function () {
         players[id].x = -100
         players[id].y = -100
     })
-    console.log()
 })
 // var numClients = 0;
 // io.on('connection', function(socket){
