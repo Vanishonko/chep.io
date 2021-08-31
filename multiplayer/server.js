@@ -33,8 +33,11 @@ io.on('connection', function (socket) {
     socket.on('ejaculate', function(newBullet_) {
         io.emit('ejaculate', id, newBullet_);
     })
-    socket.on('bulletMove', function(bIndex, dX, dY){
-        io.emit('bulletMove', id, bIndex, dX, dY);
+    socket.on('bulletMove', function(bIndex, dX, dY, range){
+        io.emit('bulletMove', id, bIndex, dX, dY, range );
+    })
+    socket.on('bulletSplice', function(i){
+        io.emit('bulletSplice', id, i);
     })
     socket.on('disconnect', function () {
         players[id].x = -100
